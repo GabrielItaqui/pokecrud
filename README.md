@@ -93,7 +93,8 @@ Rodar essa rotina irá excluir o pokémon com o ID informado da lista de pokémo
 Motivo: Tecnologia com a qual eu já tinha pratica no trabalho anterior, porém posso trabalhar e aprender com a linguagem que a empresa desejar.  
 
 - O desenvolvimento foi feito durante toda o final de semana, começando por testes com a Api, leitura das documentações das tecnologias utilizadas e diversas horas de pesquisa sobre os melhores métodos para garantir o melhor resultado.  
-- Gostaria de implementar a autenticação JWT, melhorar a exibição dos dados dos pokémon na consulta geral de treinador, e criar uma interface web para o cliente navegar e poder interagir com a aplicação.  
+- Gostaria de implementar a autenticação JWT, melhorar a exibição dos dados dos pokémon na consulta geral de treinador, e criar uma interface web para o cliente navegar e poder interagir com a aplicação.
+- Devo adicionar que foi EXTREMAMENTE divertido e desafiador o desafio, estou ancioso por uma oportunidade para trabalhar com vocês.  
 
 ## ✒️ Autor
 Gabriel Itaqui
