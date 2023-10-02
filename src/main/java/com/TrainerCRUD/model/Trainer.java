@@ -1,46 +1,35 @@
 package com.TrainerCRUD.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+import java.util.UUID;
 
-@Entity
-@Table(name = "trainer")
+@DatabaseTable(tableName = "trainers")
 public class Trainer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @DatabaseField(id = true)
+    private String id = UUID.randomUUID().toString();
 
-    @Column
+    @DatabaseField
     private String nickname;
 
-    @Column
-    private String first_name;
+    @DatabaseField
+    private String firstName;
 
-    @Column
-    private String last_name;
+    @DatabaseField
+    private String lastName;
 
-    @Column
-    private String email;
-
-    @Column
-    private String password;
-
-    @Column(name = "team_id")
+    @DatabaseField
     private Team team;
 
-    @Column
-    private int pokemons_owned;
+    public Trainer() {
+    }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -52,36 +41,20 @@ public class Trainer {
         this.nickname = nickname;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Team getTeam() {
@@ -92,11 +65,4 @@ public class Trainer {
         this.team = team;
     }
 
-    public int getPokemons_owned() {
-        return pokemons_owned;
-    }
-
-    public void setPokemons_owned(int pokemons_owned) {
-        this.pokemons_owned = pokemons_owned;
-    }
 }

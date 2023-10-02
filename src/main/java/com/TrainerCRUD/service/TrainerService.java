@@ -1,49 +1,68 @@
 package com.TrainerCRUD.service;
 
 import com.TrainerCRUD.model.Trainer;
-import java.util.ArrayList;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+
+import com.j256.ormlite.jdbc.DataSourceConnectionSource;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.SQLException;
 
 public class TrainerService implements CRUDService<Trainer> {
-
-    private List<Trainer> trainers;
-
-    public TrainerService() {
-        this.trainers = new ArrayList<>();
+    private DataSourceConnectionSource connectionSource = null;
+    
+    private void closeConn() {
+        try
+        {
+            connectionSource.close();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(TrainerService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+    private Dao<Trainer, String> trainerDao;    
 
-    /**
-     * Verifica se um treinador existe.
-     *
-     * @param id O ID do treinador a ser verificado.
-     * @return `true` se o treinador existir, `false` caso contrário.
-     */
-    public boolean treinadorExiste(int id) {
-        return trainers.stream().anyMatch(trainer -> trainer.getId() == id);
+    private Dao<Trainer, String> getDao() {
+        try
+        {           
+            return DaoManager.createDao(connectionSource, Trainer.class);
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(TrainerService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
-
+    
+    public TrainerService(DataSourceConnectionSource conn){
+        connectionSource = conn;
+    }
+    
     /**
      * Cria um novo treinador.
      *
-     * @param trainer O treinador a ser criado.
+     * @param entity
+     * @param nada;
      * @return O treinador criado.
      */
     @Override
     public Trainer create(Trainer entity) {
-        if (entity == null)
+        try
         {
-            throw new NullPointerException("O treinador não pode ser nulo. Por favor, forneça um treinador válido.");
-        }
-        if (entity.getId() < 0)
+            trainerDao = getDao();
+            trainerDao.create(entity);
+            Trainer trainer = trainerDao.queryForId(String.valueOf(entity.getId()));
+            
+            closeConn();
+            
+            return trainer;
+        } catch (SQLException ex)
         {
-            throw new IllegalArgumentException("O ID do treinador não pode ser negativo. Por favor, forneça um ID do treinador válido.");
+            Logger.getLogger(TrainerService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (treinadorExiste(entity.getId()))
-        {
-            throw new IllegalArgumentException("O treinador com o ID " + entity.getId() + " já existe. Por favor, forneça um ID do treinador exclusivo.");
-        }
-        trainers.add(entity);
-        return entity;
+        return null;
     }
 
     /**
@@ -52,11 +71,14 @@ public class TrainerService implements CRUDService<Trainer> {
      * @param id O ID do treinador a ser recuperado.
      * @return O treinador recuperado.
      */
-    @Override
-    public Trainer read(Long id) {
+    public Trainer read(String id) {
         try
         {
-            return trainers.stream().filter(trainer -> trainer.getId() == id).findFirst().orElse(null);
+            Trainer trainer = getDao().queryForId(id);      
+            
+            closeConn();
+            
+            return trainer;
         } catch (Exception e)
         {
             throw new IllegalArgumentException("O treinador com o ID " + id + " não existe. Por favor, forneça um ID do treinador válido.", e);
@@ -72,7 +94,11 @@ public class TrainerService implements CRUDService<Trainer> {
     public List<Trainer> readAll() {
         try
         {
-            return trainers.stream().toList();
+            List<Trainer> trainers =  getDao().queryForAll();         
+            
+            closeConn();
+            
+            return trainers;
         } catch (Exception e)
         {
             throw new RuntimeException("Falha ao recuperar todos os treinadores", e);
@@ -88,43 +114,26 @@ public class TrainerService implements CRUDService<Trainer> {
      */
     @Override
     public Trainer update(Trainer entity) {
-        Trainer existingTrainer = read(Long.valueOf(entity.getId()));
-        if (existingTrainer == null)
-        {
-            throw new IllegalArgumentException("O treinador com o ID " + entity.getId() + " não existe.");
-        }
-
-        existingTrainer.setNickname(entity.getNickname());
-        existingTrainer.setFirst_name(entity.getFirst_name());
-        existingTrainer.setLast_name(entity.getLast_name());
-        existingTrainer.setEmail(entity.getEmail());
-        existingTrainer.setPassword(entity.getPassword());
-        existingTrainer.setTeam(entity.getTeam());
-        existingTrainer.setPokemons_owned(entity.getPokemons_owned());
-
-        return entity;
-    }
-
-    /**
-     * Exclui um treinador.
-     *
-     * @param id O ID do treinador a ser excluído.
-     */
-    @Override
-    public void delete(Long id) {
-        Trainer existingTrainer = read(id);
-        if (existingTrainer == null)
-        {
-            throw new IllegalArgumentException("O treinador com o ID " + id + " não existe.");
-        }
-
         try
         {
-            trainers.remove(existingTrainer);
-        } catch (Exception e)
+            Trainer existingTrainer = read(String.valueOf(entity.getId()));
+            if (existingTrainer == null)
+            {
+                throw new IllegalArgumentException("O treinador com o ID " + entity.getId() + " não existe.");
+            }
+            
+            trainerDao = getDao();
+            
+            trainerDao.update(entity);            
+            Trainer trainer = trainerDao.queryForId(entity.getId());        
+            
+            closeConn();
+            
+            return trainer;
+        } catch (SQLException ex)
         {
-            throw new IllegalArgumentException("Falha ao remover o treinador com o ID " + id, e);
+            Logger.getLogger(TrainerService.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
+        return null;
+    }    
 }

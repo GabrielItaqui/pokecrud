@@ -2,6 +2,8 @@ com\TrainerCRUD\service\CRUDService.class
 com\TrainerCRUD\model\Team.class
 com\TrainerCRUD\Main.class
 com\TrainerCRUD\service\TrainerService.class
+com\TrainerCRUD\service\TrainerPokemonService.class
 com\TrainerCRUD\model\Pokemon.class
+com\TrainerCRUD\model\TrainerPokemon.class
 com\TrainerCRUD\service\PokemonService.class
 com\TrainerCRUD\model\Trainer.class
