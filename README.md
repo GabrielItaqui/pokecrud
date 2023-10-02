@@ -86,6 +86,14 @@ No lugar de {id} passe o id do treinador, como criado no cadastro.
 No lugar de {pokemon_id} passe o id do pokemon conforme pode ser consultado pelo método de consulta dos pokemon do treinador.  
 Rodar essa rotina irá excluir o pokémon com o ID informado da lista de pokémons do treinador.
 
+## Considerações:
+- Não foi possível concluir, por falta de tempo: Testes Unitários, implementação de alguns pontos do contrato e a autenticação JWT.
+
+- Tecnologia escolhida: Java  
+Motivo: Tecnologia com a qual eu já tinha pratica no trabalho anterior, porém posso trabalhar e aprender com a linguagem que a empresa desejar.  
+
+- O desenvolvimento foi feito durante toda o final de semana, começando por testes com a Api, leitura das documentações das tecnologias utilizadas e diversas horas de pesquisa sobre os melhores métodos para garantir o melhor resultado.  
+- Gostaria de implementar a autenticação JWT, melhorar a exibição dos dados dos pokémon na consulta geral de treinador, e criar uma interface web para o cliente navegar e poder interagir com a aplicação.  
 
 ## ✒️ Autor
 Gabriel Itaqui
